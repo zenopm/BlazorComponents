@@ -1,0 +1,51 @@
+@inherits MyComponentBase
+@typeparam TItem
+
+<CascadingValue Value="this">
+    <CascadingValue Value="GridParams">
+        <div class="@( GetBusyCss() )">
+            <MyGridPager />
+
+            <table class="table table-hover grid-table" style="@( GetMinWidthStyle() )">
+                <thead class="grid-head">
+                    @HeaderContent
+                </thead>
+                @if (CustomTableBody)
+                {
+                    @if (Items.Count == 0)
+                    {
+                        @NoRecordsContent
+                    }
+                    else
+                    {
+                        foreach (var item in Items)
+                        {
+                            @RowContent(item)
+                        }
+                    }
+                }
+                else
+                {
+                    <tbody class="grid-body">
+                        @if (Items.Count == 0)
+                        {
+                            @NoRecordsContent
+                        }
+                        else
+                        {
+                            foreach (var item in Items)
+                            {
+                                @RowContent(item)
+                            }
+                        }
+                    </tbody>
+                }
+            </table>
+
+            @if (GridParams.BottomPagerVisible)
+            {
+                <MyGridPager />
+            }
+        </div>
+    </CascadingValue>
+</CascadingValue>

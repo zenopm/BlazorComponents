@@ -1,0 +1,124 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+    <MyGrid Items="forecasts" GridChanged="RefreshGrid">
+        <HeaderContent>
+            <tr>
+                <MyGridColumn ColumnName="Date" DisplayName="Name"></MyGridColumn>
+                <MyGridColumn ColumnName="Temp. (C)" DisplayName="Username"></MyGridColumn>
+                <th></th>
+            </tr>
+        </HeaderContent>
+        <NoRecordsContent>
+            <tr>
+                <td colspan="3">No users found</td>
+            </tr>
+        </NoRecordsContent>
+        <RowContent>
+            <tr @key=context.Summary>
+                <td>@context.Date.ToShortDateString()</td>
+                <td>@context.TemperatureC</td>
+                <td>@context.TemperatureF</td>
+                <td>@context.Summary</td>
+            </tr>
+        </RowContent>
+    </MyGrid>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+
+    public class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+
+    protected async Task RefreshGrid()
+    {
+        //try
+        //{
+        //    await ShieldUserGrid.ShowBusy();
+        //    await ShieldUserSearchBox.ShowBusy();
+
+        //    if (!String.IsNullOrWhiteSpace(Reason))
+        //    {
+        //        if (!(ShieldUserGrid.GridParams is CompanyParams))
+        //        {
+        //            var baseSearch = ShieldUserGrid.GridParams.SearchFilter;
+        //            ShieldUserGrid.GridParams = new CompanyParams()
+        //                {
+        //                    BottomPagerVisible = false,
+        //                    PageSize = 3,
+        //                    SearchFilter = baseSearch,
+        //                };
+        //        }
+
+        //        var parms = ShieldUserGrid.GridParams as CompanyParams;
+        //        if (parms != null)
+        //        {
+        //            parms.CompanyId = CompanyId ?? MySession.ActiveShieldUser.CompanyId;
+        //            ShieldUserList = await ShieldUserRepository.GetUsersAsync(parms);
+        //        }
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    ErrorMessage = ex.Message;
+        //}
+        //finally
+        //{
+        //    ShieldUserGrid.HideBusy();
+        //    ShieldUserSearchBox.HideBusy();
+        //    StateHasChanged();
+        //}
+        await Task.CompletedTask;
+    }
+
+}

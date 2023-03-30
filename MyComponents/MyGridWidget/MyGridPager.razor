@@ -1,0 +1,52 @@
+﻿@if (PagerParams.PagerVisible && AfterRender)
+{
+    <div class="card border-0" style="background-color: #C1D5E1; padding: 0.75rem 1rem 0.65rem 1rem;">
+        <div class="d-flex justify-content-between">
+            <div class="text-bold position-relative" style="font-size: 0.9rem; color: #80A7BB; top: @( PagerParams.ShowPageNavigation ? "4px;" : "0px;" )">@PagerParams.PagingVerbiage</div>
+            @if (!String.IsNullOrWhiteSpace(PagerParams.PagerMessage))
+            {
+                <div class="text-bold position-relative" style="font-size: 0.9rem; color: #80A7BB; top: 4px;">@PagerParams.PagerMessage</div>
+            }
+
+            @if (PagerParams.ShowPageNavigation)
+            {
+                <div class="d-flex">
+                    @if (PagerParams.TotalRecords > 0 && PagerParams.ShowPageSizes)
+                    {
+                        <select class="si-dropdown" @onchange="PageSizeChanged">
+                            @foreach (var pageSize in PagerParams.PageSizeValues)
+                            {
+                                if (pageSize == PagerParams.PageSize)
+                                {
+                                    <option value="@pageSize" selected>Show @pageSize</option>
+                                }
+                                else
+                                {
+                                    <option value="@pageSize">Show @pageSize</option>
+                                }
+                            }
+
+                            @if (PagerParams.PageSize == 0)
+                            {
+                                <option value="0" selected>All</option>
+                            }
+                            else
+                            {
+                                <option value="0">All</option>
+                            }
+                        </select>
+                    }
+
+                    <div @onclick="PreviousPageClicked" class="grid-pager-nav text-bold ml-3 @( PagerParams.FirstPage ? "disabled" : String.Empty )">
+                        <i class="fas fa-chevron-left"></i>
+                        <span class="ml-2">Prev.</span>
+                    </div>
+                    <div @onclick="NextPageClicked" class="grid-pager-nav text-bold ml-4 mr-1 @( PagerParams.LastPage ? "disabled" : String.Empty )">
+                        <span class="mr-2">Next</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

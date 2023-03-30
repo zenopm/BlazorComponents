@@ -1,0 +1,45 @@
+@using MyComponents.Enums;
+
+<th class="@( DisableSort ? "text-decoration-none cursor-pointer-default" : string.Empty ) grid-th"
+    style="@( MinWidth > 0 ? $"min-width: {MinWidth}rem;" : String.Empty ) @( Width > 0 ? $" width: {Width}rem;" : String.Empty ) vertical-align: top;"
+    rowspan="@RowSpan"
+    colspan="@ColSpan">
+    <div class="d-flex @( GetAlignmentCss() )">
+        @if (DisableSort || ChildContent != null)
+        {
+            if (string.IsNullOrWhiteSpace(DisplayName))
+            {
+                <div class="w-100">@ChildContent</div>
+            }
+            else
+            {
+                <div>@DisplayName</div>
+            }
+        }
+        else
+        {
+            <div @onclick="NameClicked">@DisplayName</div>
+
+            @if (ColumnName == GridParams.OrderBy)
+            {
+                <div>
+                    @switch (GridParams.SortOrder)
+                    {
+                        case SortOrder.Ascending:
+                            <i class="fas fa-sort-up position-relative" style="top: 4px; left: 3px;"></i>
+                            break;
+
+                        case SortOrder.Descending:
+                            <i class="fas fa-sort-down position-relative" style="top: -3px; left: 3px;"></i>
+                            break;
+
+                        case SortOrder.Unspecified:
+                        default:
+                            @* DO NOTHING *@
+                            break;
+                    }
+                </div>
+            }
+        }
+    </div>
+</th>
