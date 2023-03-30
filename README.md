@@ -1,2 +1,2 @@
 # BlazorComponents
-Blazor components primarily written to be consumer by WASM.... not all of them are Server friendly.
+Blazor components primarily written to be consumed by WASM.... not all of them are Server friendly.
